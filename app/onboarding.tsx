@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { database } from '@/services/database';
-import { NotificationService } from '@/services/notifications';
 
 interface GlassTypeInput {
   id: string;
@@ -107,13 +106,6 @@ export default function OnboardingScreen() {
       for (const glass of glassTypes) {
         await database.addGlassType(glass.name, parseInt(glass.volume));
       }
-
-      // Demander les permissions et configurer les notifications
-      const hasPermission = await NotificationService.requestPermissions();
-      if (hasPermission) {
-        await NotificationService.scheduleWaterReminders(parseInt(dailyGoal));
-      }
-
       // Naviguer vers la page d'accueil
       router.replace('/');
     } catch (error) {
